@@ -1,8 +1,8 @@
 {
   "profiles": {
-    "MergeCsvs": {
+    "CVDAETL": {
       "commandName": "Project",
-      "commandLineArgs": "-f \"C:\\Scratch\\cvdaETL\""
+      "commandLineArgs": "f \"C:\\Users\\razat\\OneDrive\\dev\\CVDACTION\\csvs\""
     }
   }
 }

@@ -8,22 +8,57 @@ using cvdaETL.Core.Models;
 
 namespace cvdaETL.Data
 {
-    internal class Repo
+    public class Repo
     {
-        public  List<string> Files { get; }
-        public Dictionary<string, List<string>> CvdaTargets { get; }
-        public List<ModelCVDA> CvdaModels { get; }
-
-        public Repo(string folderRootPath)
+        private static Repo _instance;
+        public static Repo Instance
         {
-            Files = GetFiles(folderRootPath);
-            CvdaTargets = importCVDATargets(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"CVDATargets.xml"));
-            CvdaModels = new List<ModelCVDA>();
+            get
+            {
+                if (_instance == null)
+                {
+                    throw new InvalidOperationException("Repo instance has not been initialized.");
+                }
+                return _instance;
+            }
         }
 
-        public List<string> GetFiles(string folderRootPath)
+        public string ConnectionString { get; set; }
+        public string CsvPath { get; set; }
+        public Dictionary<string, List<string>> CvdaTargetMaps { get; }
+        public List<ModelAppointment> CvdaAppointments { get; set; }
+        public List<ModelClinic> CvdaClinics { get; set; }
+        public List<ModelCondition> CvdaConditions { get; set; }
+        public List<ModelInteraction> CvdaInteractions { get; set; }
+        public List<ModelObservation> CvdaObservations { get; set; }
+        public List<ModelPatient> CvdaPatients { get; set; }
+        public List<ModelRegister> CvdaRegisters { get; set; }
+        public List<ModelStaff> CvdaStaff { get; set; }
+        public List<ModelTarget> CvdaTargets { get; set; }
+
+        private Repo(string Connectionstring, string Csvpath)
         {
-            return Directory.GetFiles(folderRootPath, "*.csv").Select(Path.GetFileName).ToList();
+            ConnectionString = Connectionstring;
+            CsvPath = Csvpath;
+            CvdaTargetMaps = importCVDATargets(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CVDATargets.xml"));
+            CvdaAppointments = new List<ModelAppointment>();
+            CvdaClinics = new List<ModelClinic>();
+            CvdaConditions = new List<ModelCondition>();
+            CvdaInteractions = new List<ModelInteraction>();
+            CvdaObservations = new List<ModelObservation>();
+            CvdaPatients = new List<ModelPatient>();
+            CvdaRegisters = new List<ModelRegister>();
+            CvdaStaff = new List<ModelStaff>();
+            CvdaTargets = new List<ModelTarget>();
+        }
+
+        public static void Initialize(string Connectionstring, string Csvpath)
+        {
+            if (_instance != null)
+            {
+                throw new InvalidOperationException("Repo instance has already been initialized.");
+            }
+            _instance = new Repo(Connectionstring, Csvpath);
         }
 
         private Dictionary<string, List<string>> importCVDATargets(string xmlString)
@@ -49,7 +84,5 @@ namespace cvdaETL.Data
             }
             return dictionary;
         }
-
-
     }
 }

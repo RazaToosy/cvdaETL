@@ -4,6 +4,7 @@ using cvdaETL;
 using cvdaETL.Data;
 using cvdaETL.Services;
 using cvdaETL.Services.CsvHelper;
+using cvdaETL.Utilities;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Allows you to use the configuration in your application
@@ -12,7 +13,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-var builder = Host.CreateDefaultBuilder(args)
+static string GetConnectionString()
+{
+    var builder = Host.CreateDefaultBuilder()
     .ConfigureAppConfiguration((hostingContext, config) =>
     {
         config.AddIniFile("config.ini", optional: true, reloadOnChange: true);
@@ -23,11 +26,16 @@ var builder = Host.CreateDefaultBuilder(args)
     })
     .Build();
 
-// Now you can access the configuration throughout your application
-var configuration = builder.Services.GetRequiredService<IConfiguration>();
-var connectionString = configuration.GetConnectionString("DefaultConnection");
+    // Now you can access the configuration throughout your application
+    var configuration = builder.Services.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-builder.Run();
+    builder.Run();
+    
+    return connectionString;
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,6 +50,7 @@ Log.Logger = new LoggerConfiguration()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Start the application
 Console.WriteLine("Hello, DarkStar!");
+
 Parser.Default.ParseArguments<Options>(args)
     .WithParsed(RunWithOptions)
     .WithNotParsed(HandleParseError);
@@ -49,31 +58,36 @@ Parser.Default.ParseArguments<Options>(args)
 
 static void RunWithOptions(Options opts)
 {
-    var outputFolder = Path.Combine(opts.FolderPath, "Output");
-    if (Directory.Exists(outputFolder)) Directory.Delete(outputFolder,true);
+    var connectionString = GetConnectionString();
+    Console.WriteLine($"Database located.... ");
+    Repo.Initialize(connectionString, opts.CsvPath); // repo is a static singleton
 
-    Console.WriteLine($"Creating Repository.... {opts.FolderPath}");
-    var repo = new Repo(opts.FolderPath);
+    string[] csvFiles = Directory.GetFiles(opts.CsvPath, "*.csv");
+    foreach (string csvFile in csvFiles) CSVUtilities.Filter(csvFile);
 
-    Directory.CreateDirectory(outputFolder);
-    
+    //Work on updating each table in turn from outside in. Guids as primary keys
+    // Looking to update or insert rather than delete and insert
+    // In this order
+    // 1. Patients
+    // 2. Conditions
+    // 3. Targets
+    // 4. RecallTeam
+    // 5. Staff
+    // 6. Clinics
+    // 7. Interactions
+    // 8. Appointments
+    // 9. Observations
+    //
+    // Registers are a bit different as they are a bit more complex
+    // Update Registers as you go along the ETL process
+    // One class per import passing the Repo object
 
-    Console.WriteLine($"Importing in csvs...");
-    foreach (var csvFile in repo.Files)
-    {
-        var filename = Path.Combine(opts.FolderPath, csvFile);
-        var records = new CsvHelperManager().ReadCsvFile(filename);
-        repo.CvdaModels.AddRange(records);
-    }
+    Console.WriteLine($"Importing csvs...");
 
-    Console.WriteLine($"Exporting csvs to {outputFolder}..");
-
-    new CsvHelperManager().WriteCsvFile(repo.CvdaModels, Path.Combine(outputFolder, "CVDATargets.csv"));
-
-    Console.WriteLine("Enjoy...");
+    Console.WriteLine("Goodbye🦾...");
     Console.WriteLine("Press any key to continue...");
     Console.ReadKey();
- }
+}
 
 static void HandleParseError(IEnumerable<Error> errs)
 {

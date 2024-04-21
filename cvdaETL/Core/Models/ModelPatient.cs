@@ -32,6 +32,7 @@ namespace cvdaETL.Core.Models
         public int HealthDecile { get; set; }
         public string Ethnicity { get; set; }
         public string PHMData { get; set; }
+        public string CurrentState { get; set; }
 
         // Navigation properties
         public ICollection<ModelObservation> Observations { get; set; }

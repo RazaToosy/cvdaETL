@@ -10,7 +10,7 @@ namespace cvdaETL
 {
     internal class Options
     {
-        [Option('f', "folder", Required = false, HelpText = "Set the folder path.")]
-        public string? FolderPath { get; set; }
+        [Option('f', "csvlocation", Required = false, HelpText = "Set the csv path.")]
+        public string? CsvPath { get; set; }
     }
 }
