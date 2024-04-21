@@ -6,7 +6,7 @@ using cvdaETL.Core.Models;
 
 namespace cvdaETL.Services.CsvHelper
 {
-    internal class CsvHelperManager
+    public class CsvHelperManager
     {
         // where T is the Model and TMap is the ClassMap
         // Example: ImportFromCsv<ModelPatient, PatientMap>(filePath);

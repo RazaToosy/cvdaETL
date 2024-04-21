@@ -8,16 +8,14 @@ namespace cvdaETL.Core.Enums
 {
     public enum RegisterState
     {
-        ActiveNotSeen,
+        Active,
         New,
         Removed,
         FollowUp,
         Seen,
         DNA,
         Died,
-        Excluded,
         RecallExcluded,
-        TriageExcluded
     }
 }
 

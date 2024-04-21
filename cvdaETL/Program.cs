@@ -4,6 +4,7 @@ using cvdaETL;
 using cvdaETL.Data;
 using cvdaETL.Services;
 using cvdaETL.Services.CsvHelper;
+using cvdaETL.Services.ETLManager;
 using cvdaETL.Utilities;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,7 +83,8 @@ static void RunWithOptions(Options opts)
     // Update Registers as you go along the ETL process
     // One class per import passing the Repo object
 
-    Console.WriteLine($"Importing csvs...");
+    Console.WriteLine($"Importing Patients...");
+    new PatientProcessor().ImportPatients();
 
     Console.WriteLine("Goodbye🦾...");
     Console.WriteLine("Press any key to continue...");

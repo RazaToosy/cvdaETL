@@ -7,7 +7,7 @@ namespace cvdaETL.Core.Models
         public string RegisterID { get; set; }
         public string PatientID { get; set; }
         public DateTime RegisterDate { get; set; }
-        public string RegisterType { get; set; }
+        public string RegisterState { get; set; }
 
         // Navigation property
         public ICollection<ModelPatient> Patients { get; set; }
