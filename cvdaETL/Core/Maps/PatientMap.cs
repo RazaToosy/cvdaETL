@@ -15,7 +15,7 @@ namespace cvdaETL.Core.Maps
             Map(m => m.PatientID).Name("PatientID");
             Map(m => m.EmisNo).Name("EmisNo");
             Map(m => m.ODSCode).Name("ODSCode");
-            Map(m => m.NHSNumber).Name("NHSNumber"); 
+            Map(m => m.NHSNumber).Name("NHSNumber");
             Map(m => m.RiskScore).Name("AllConditionsRSTPHMCombined");
             Map(m => m.HouseBound).Name("HOUSEBOUND");
             Map(m => m.InHome).Name("INHOME");
@@ -26,7 +26,7 @@ namespace cvdaETL.Core.Maps
             Map(m => m.FirstNames).Name("FirstNames");
             Map(m => m.Title).Name("Title");
             Map(m => m.Sex).Name("Sex");
-            Map(m => m.DateOfBirth).Name("DateOfBirth");
+            Map(m => m.DateOfBirth).Name("DateOfBirth").TypeConverterOption.Format("dd/MM/yyyy"); ;
             Map(m => m.Age).Name("Age");
             Map(m => m.HouseNameFlat).Name("HouseNameFlat");
             Map(m => m.Street).Name("Street");

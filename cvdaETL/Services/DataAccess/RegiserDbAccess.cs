@@ -19,7 +19,7 @@ namespace cvdaETL.Services.DataAccess
             _connectionString = Repo.Instance.ConnectionString;
         }
 
-        public void InsertRegister(ModelRegister register)
+        public void InsertRegister(List<ModelRegister> register)
         {
             using (var connection = new SqliteConnection(_connectionString))
             {

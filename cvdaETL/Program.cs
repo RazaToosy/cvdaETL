@@ -30,15 +30,12 @@ static string GetConnectionString()
     // Now you can access the configuration throughout your application
     var configuration = builder.Services.GetRequiredService<IConfiguration>();
     var connectionString = configuration.GetConnectionString("DefaultConnection");
-
-    builder.Run();
-    
     return connectionString;
 }
 
-
+Console.OutputEncoding = System.Text.Encoding.UTF8;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+SQLitePCL.Batteries_V2.Init();
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Adding Logging to the console application using Serilog
 Log.Logger = new LoggerConfiguration()
@@ -50,7 +47,7 @@ Log.Logger = new LoggerConfiguration()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Start the application
-Console.WriteLine("Hello, DarkStar!");
+Console.WriteLine("Hello, DarkStar! ☀️");
 
 Parser.Default.ParseArguments<Options>(args)
     .WithParsed(RunWithOptions)

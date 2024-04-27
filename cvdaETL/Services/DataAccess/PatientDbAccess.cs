@@ -96,19 +96,19 @@ namespace cvdaETL.Services.DataAccess
         }
         public Dictionary<string, string> GetNHSNumbers()
         {
-            using (IDbConnection db = new SqliteConnection(_connectionString))
+            Dictionary<string, string> nhsNumbers = new Dictionary<string, string>();
+            using var connection = new SqliteConnection(_connectionString);
             {
-                db.Open();
-
+                connection.Open();
+                
                 string sql = "SELECT NHSNumber, PatientID FROM Patients;";
-
-                Dictionary<string, string> nhsNumbers = db.Query<(string, string)>(sql)
+                nhsNumbers = connection.Query<(string, string)>(sql)
                     .ToDictionary(row => row.Item1, row => row.Item2);
-
-                db.Close();
-
-                return nhsNumbers;
+                
+                connection.Close();
             }
+
+            return nhsNumbers;
         }
 
     }

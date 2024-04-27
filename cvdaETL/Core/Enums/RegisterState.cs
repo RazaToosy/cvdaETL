@@ -10,12 +10,12 @@ namespace cvdaETL.Core.Enums
     {
         Active,
         New,
-        Removed,
+        ConditionExclusions,
         FollowUp,
         Seen,
         DNA,
         Died,
-        RecallExcluded,
+        RecallExclusions,
     }
 }
 

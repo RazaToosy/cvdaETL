@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace cvdaETL.Core.Maps
 {
-    public sealed class PatientNHSNoOnlyMap : ClassMap<string>
+    public sealed class PatientNHSNoOnlyMap : ClassMap<ModelPatientNHSNoOnly>
     {
         public PatientNHSNoOnlyMap()
         {
-            Map(m => m).Name("NHSNumber");
+            Map(m => m.NHSNumber).Name("NHSNumber");
         }
     }
 }
