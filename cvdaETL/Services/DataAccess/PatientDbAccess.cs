@@ -5,16 +5,18 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using cvdaETL.Core.Interfaces;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using cvdaETL.Core.Models;
 using cvdaETL.Data;
 using Serilog;
+using System.Data.OleDb;
 
 namespace cvdaETL.Services.DataAccess
 {
-    public class PatientDbAccess
+    public class PatientDbAccess : IDbPatientAccess
     {
         private readonly string _connectionString;
 
@@ -94,6 +96,7 @@ namespace cvdaETL.Services.DataAccess
                 db.Close();
             }
         }
+        
         public Dictionary<string, string> GetNHSNumbers()
         {
             Dictionary<string, string> nhsNumbers = new Dictionary<string, string>();

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using cvdaETL.Core.Enums;
+using cvdaETL.Core.Interfaces;
 using cvdaETL.Core.Maps;
 using cvdaETL.Core.Models;
 using cvdaETL.Data;
@@ -19,11 +21,30 @@ namespace cvdaETL.Services.ETLManager
 
         public void ImportPatients()
         {
+
+            IDbPatientAccess patientAccess;
+            IDbRegisterAccess registerAccess;
+
             // Import the patients from the CSV file
             var patients = new CsvHelperManager().ImportFromCsv<ModelPatient, PatientMap>(Path.Combine(Repo.Instance.CsvPath, "Base.csv"));
             var excludedFromRecall = new CsvHelperManager().ImportFromCsv<ModelPatientNHSNoOnly, PatientNHSNoOnlyMap>(Path.Combine(Repo.Instance.CsvPath, "Excluded.csv"));
             var activePatients = new CsvHelperManager().ImportFromCsv<ModelPatientNHSNoOnly, PatientNHSNoOnlyMap>(Path.Combine(Repo.Instance.CsvPath, "Recall.csv"));
-            var existingNHSNumbers = new PatientDbAccess().GetNHSNumbers();
+
+            if (Repo.Instance.ConnectionString.Contains("accdb"))
+            {
+                patientAccess = new PatientAccdbAccess();
+                registerAccess = new RegisterAccdbAccess();
+                //patients.ForEach(patient => patient.DateOfBirth = DateTime.ParseExact(patient.DateOfBirth.ToString("MM/dd/yyyy"), "MM/dd/yyyy", CultureInfo.InvariantCulture));
+
+            }
+            else
+            {
+                patientAccess = new PatientDbAccess();
+                registerAccess = new RegisterDbAccess();
+            }
+
+            
+            var existingNHSNumbers = patientAccess.GetNHSNumbers();
 
             // Create lists to hold patients for update and insert
             List<ModelPatient> patientsForUpdate = new List<ModelPatient>();
@@ -39,7 +60,7 @@ namespace cvdaETL.Services.ETLManager
                     RegisterState.ConditionExclusions.ToString();
 
                 // Check if the patient is in the existing Patient Table
-                if (existingNHSNumbers.ContainsKey(patient.NHSNumber))
+                if (existingNHSNumbers.ContainsValue(patient.NHSNumber))
                 {
                     // Add the patient to the list for update
                     patientsForUpdate.Add(patient);
@@ -76,13 +97,13 @@ namespace cvdaETL.Services.ETLManager
             Console.WriteLine("Patients for update: " + patientsForUpdate.Count);
             Console.WriteLine("Patients for insert: " + patientsForInsert.Count);
             Console.WriteLine("Accessing Patient Table and Updating...");
-            new PatientDbAccess().UpdatePatients(patientsForUpdate);
-            new PatientDbAccess().InsertPatients(patientsForInsert);
+            patientAccess.UpdatePatients(patientsForUpdate);
+            patientAccess.InsertPatients(patientsForInsert);
             Console.WriteLine("Accessing Register Table and Updating...");
-            new RegiserDbAccess().InsertRegister(patientsForRegister);
+            registerAccess.InsertRegister(patientsForRegister);
 
             Log.Information("Imported {0} patients from the CSV file into DB.", patients.Count);
-            Log.Information("Imported {0} new patients finto DB.", patientsForInsert.Count);
+            Log.Information("Imported {0} new patients into DB.", patientsForInsert.Count);
 
             Repo.Instance.CvdaPatients = patients;
 

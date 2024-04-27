@@ -29,7 +29,8 @@ static string GetConnectionString()
 
     // Now you can access the configuration throughout your application
     var configuration = builder.Services.GetRequiredService<IConfiguration>();
-    var connectionString = configuration.GetConnectionString("DefaultConnection");
+    //var connectionString = configuration.GetConnectionString("SQLiteConnection");
+    var connectionString = configuration.GetConnectionString("AccessConnection");
     return connectionString;
 }
 

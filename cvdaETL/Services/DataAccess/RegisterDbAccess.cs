@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using cvdaETL.Core.Interfaces;
 using cvdaETL.Core.Models;
 using cvdaETL.Data;
 using Dapper;
@@ -11,10 +12,10 @@ using Microsoft.Win32;
 
 namespace cvdaETL.Services.DataAccess
 {
-    public class RegiserDbAccess
+    public class RegisterDbAccess : IDbRegisterAccess
     {
         private string _connectionString;
-        public RegiserDbAccess()
+        public RegisterDbAccess()
         {
             _connectionString = Repo.Instance.ConnectionString;
         }
