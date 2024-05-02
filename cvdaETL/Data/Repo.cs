@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace cvdaETL.Data
         }
 
         public string ConnectionString { get; set; }
+        public DateTime InsertDate { get; set; }
         public string CsvPath { get; set; }
         public Dictionary<string, List<string>> CvdaTargetMaps { get; }
         public List<ModelAppointment> CvdaAppointments { get; set; }
@@ -36,8 +38,9 @@ namespace cvdaETL.Data
         public List<ModelStaff> CvdaStaff { get; set; }
         public List<ModelTarget> CvdaTargets { get; set; }
 
-        private Repo(string Connectionstring, string Csvpath)
+        private Repo(string Connectionstring, string Csvpath, DateTime DateToInsert)
         {
+            InsertDate = DateToInsert;
             ConnectionString = Connectionstring;
             CsvPath = Csvpath;
             CvdaTargetMaps = importCVDATargets(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CVDATargets.xml"));
@@ -52,13 +55,13 @@ namespace cvdaETL.Data
             CvdaTargets = new List<ModelTarget>();
         }
 
-        public static void Initialize(string Connectionstring, string Csvpath)
+        public static void Initialize(string Connectionstring, string Csvpath, DateTime DateToInsert)
         {
             if (_instance != null)
             {
                 throw new InvalidOperationException("Repo instance has already been initialized.");
             }
-            _instance = new Repo(Connectionstring, Csvpath);
+            _instance = new Repo(Connectionstring, Csvpath, DateToInsert);
         }
 
         private Dictionary<string, List<string>> importCVDATargets(string xmlString)

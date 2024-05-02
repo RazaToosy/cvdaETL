@@ -12,5 +12,8 @@ namespace cvdaETL
     {
         [Option('f', "CsvPath", Required = true, HelpText = "Set the csv path.")]
         public string? CsvPath { get; set; }
+
+        [Option('d', "InsertDate", Required = true, HelpText = "Set the Insert Date.")]
+        public string? InsertDate { get; set; }
     }
 }

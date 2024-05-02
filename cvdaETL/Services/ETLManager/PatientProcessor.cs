@@ -18,43 +18,31 @@ namespace cvdaETL.Services.ETLManager
 {
     public class PatientProcessor
     {
+        ResolveDb _dbAccess;
 
+        public PatientProcessor(ResolveDb dbAccess)
+        {
+            _dbAccess = dbAccess;
+        }
         public void ImportPatients()
         {
-
-            IDbPatientAccess patientAccess;
-            IDbRegisterAccess registerAccess;
-
             // Import the patients from the CSV file
             var patients = new CsvHelperManager().ImportFromCsv<ModelPatient, PatientMap>(Path.Combine(Repo.Instance.CsvPath, "Base.csv"));
             var excludedFromRecall = new CsvHelperManager().ImportFromCsv<ModelPatientNHSNoOnly, PatientNHSNoOnlyMap>(Path.Combine(Repo.Instance.CsvPath, "Excluded.csv"));
             var activePatients = new CsvHelperManager().ImportFromCsv<ModelPatientNHSNoOnly, PatientNHSNoOnlyMap>(Path.Combine(Repo.Instance.CsvPath, "Recall.csv"));
 
-            if (Repo.Instance.ConnectionString.Contains("accdb"))
-            {
-                patientAccess = new PatientAccdbAccess();
-                registerAccess = new RegisterAccdbAccess();
-                //patients.ForEach(patient => patient.DateOfBirth = DateTime.ParseExact(patient.DateOfBirth.ToString("MM/dd/yyyy"), "MM/dd/yyyy", CultureInfo.InvariantCulture));
-
-            }
-            else
-            {
-                patientAccess = new PatientDbAccess();
-                registerAccess = new RegisterDbAccess();
-            }
-
-            
-            var existingNHSNumbers = patientAccess.GetNHSNumbers();
+            var existingNHSNumbers = _dbAccess.PatientAccess.GetNHSNumbers();
 
             // Create lists to hold patients for update and insert
             List<ModelPatient> patientsForUpdate = new List<ModelPatient>();
             List<ModelPatient> patientsForInsert = new List<ModelPatient>();
             List<ModelRegister> patientsForRegister = new List<ModelRegister>();
 
+            Dictionary<string, string> cvdaTargets = new Dictionary<string, string>();
+
             patients.ForEach(patient =>
             {
-                
-                 // Set the patient's current state based on the conditions
+                // Set the patient's current state based on the conditions
                 patient.CurrentState = activePatients.Any(p => p.NHSNumber == patient.NHSNumber) ? RegisterState.Active.ToString() :
                     excludedFromRecall.Any(p => p.NHSNumber == patient.NHSNumber) ? RegisterState.RecallExclusions.ToString() :
                     RegisterState.ConditionExclusions.ToString();
@@ -74,7 +62,7 @@ namespace cvdaETL.Services.ETLManager
                     {
                         RegisterID = Guid.NewGuid().ToString(),
                         PatientID = patient.PatientID,
-                        RegisterDate = DateTime.Now,
+                        RegisterDate = Repo.Instance.InsertDate,
                         RegisterState = RegisterState.New.ToString()
                     };
                     patientsForRegister.Add(register);
@@ -85,22 +73,25 @@ namespace cvdaETL.Services.ETLManager
                         {
                             RegisterID = Guid.NewGuid().ToString(),
                             PatientID = patient.PatientID,
-                            RegisterDate = DateTime.Now,
+                            RegisterDate = Repo.Instance.InsertDate,
                             RegisterState = RegisterState.Active.ToString()
                         };
                         patientsForRegister.Add(active);
                     }
                     
                 }
+                cvdaTargets.Add(patient.PatientID, patient.CVDATargets);
 
             });
             Console.WriteLine("Patients for update: " + patientsForUpdate.Count);
             Console.WriteLine("Patients for insert: " + patientsForInsert.Count);
             Console.WriteLine("Accessing Patient Table and Updating...");
-            patientAccess.UpdatePatients(patientsForUpdate);
-            patientAccess.InsertPatients(patientsForInsert);
-            Console.WriteLine("Accessing Register Table and Updating...");
-            registerAccess.InsertRegister(patientsForRegister);
+            _dbAccess.PatientAccess.UpdatePatients(patientsForUpdate);
+            _dbAccess.PatientAccess.InsertPatients(patientsForInsert);
+            Console.WriteLine("Inserting Registers...");
+            _dbAccess.RegisterAccess.InsertRegister(patientsForRegister);
+            Console.WriteLine("Inserting Conditions and Targets...");
+            _dbAccess.ConditionsAndTargetsAccess.InsertConditionsAndTargets(cvdaTargets);
 
             Log.Information("Imported {0} patients from the CSV file into DB.", patients.Count);
             Log.Information("Imported {0} new patients into DB.", patientsForInsert.Count);

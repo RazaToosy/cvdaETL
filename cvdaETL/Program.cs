@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using CommandLine;
 using cvdaETL;
+using cvdaETL.Core.Interfaces;
 using cvdaETL.Data;
 using cvdaETL.Services;
 using cvdaETL.Services.CsvHelper;
@@ -59,7 +60,8 @@ static void RunWithOptions(Options opts)
 {
     var connectionString = GetConnectionString();
     Console.WriteLine($"Database located.... ");
-    Repo.Initialize(connectionString, opts.CsvPath); // repo is a static singleton
+    var DateOfInsertion = DateTime.Parse(opts.InsertDate);
+    Repo.Initialize(connectionString, opts.CsvPath, DateOfInsertion); // repo is a static singleton
 
     string[] csvFiles = Directory.GetFiles(opts.CsvPath, "*.csv");
     foreach (string csvFile in csvFiles) CSVUtilities.Filter(csvFile);
@@ -81,8 +83,10 @@ static void RunWithOptions(Options opts)
     // Update Registers as you go along the ETL process
     // One class per import passing the Repo object
 
+    var  dbAccess = new ResolveDb(connectionString);
+
     Console.WriteLine($"Importing Patients...");
-    new PatientProcessor().ImportPatients();
+    new PatientProcessor(dbAccess).ImportPatients();
 
     Console.WriteLine("Goodbye🦾...");
     Console.WriteLine("Press any key to continue...");

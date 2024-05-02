@@ -42,6 +42,7 @@ namespace cvdaETL.Core.Maps
             Map(m => m.HealthDecile).Name("HealthDecile");
             Map(m => m.Ethnicity).Name("Ethnicity");
             Map(m => m.PHMData).Name("PHMData");
+            Map(m => m.CVDATargets).Name("MetricShortName");
         }
     }
 }
