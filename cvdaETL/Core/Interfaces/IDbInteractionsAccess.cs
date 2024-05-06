@@ -10,6 +10,7 @@ namespace cvdaETL.Core.Interfaces
     public interface IDbInteractionsAccess
     {
         void InsertInteractions(List<ModelInteraction> Interactions);
+        List<ModelInteraction> GetAllInteractions();
         void InsertRecallTeam(ModelRecallTeam RecallTeam);
         Dictionary<string, string> GetCurrentRecallTeam(); 
         bool CheckIfDateExists(DateTime Date);

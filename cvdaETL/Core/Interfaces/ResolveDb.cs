@@ -18,6 +18,7 @@ namespace cvdaETL.Core.Interfaces
         IDbRegisterAccess _registerAccess;
         IDbConditionsAndTargetsAccess _conditionsAndTargetsAccess;
         IDbInteractionsAccess _interactionsAccess;
+        IDbAppointmentAccess _appointmentAccess;
 
         public ResolveDb(string ConfigurationString)
         {
@@ -27,6 +28,7 @@ namespace cvdaETL.Core.Interfaces
                 _registerAccess = new RegisterAccdbAccess();
                 _conditionsAndTargetsAccess = new ConditionsAndTargetsAccdbAccess();
                 _interactionsAccess = new InteractionsAccdbAccess();
+                _appointmentAccess = new AppointmentAndStaffAccdbAccess();
                 Repo.Instance.InsertDate = DateTime.ParseExact(Repo.Instance.InsertDate.ToString("MM/dd/yyyy"), "MM/dd/yyyy",
                     CultureInfo.InvariantCulture); //converts date to MM/dd/yyyy format for Access Insertion
             }
@@ -59,6 +61,12 @@ namespace cvdaETL.Core.Interfaces
         {
             get => _interactionsAccess;
             set => _interactionsAccess = value;
+        }
+
+        public IDbAppointmentAccess AppointmentAccess
+        {
+            get => _appointmentAccess;
+            set => _appointmentAccess = value;
         }
     }
 }

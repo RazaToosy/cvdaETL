@@ -91,6 +91,9 @@ static void RunWithOptions(Options opts)
     Console.WriteLine($"Importing Interactions for Recall Team...");
     new InteractionsProcessor(dbAccess).ProcessInteractions();
 
+    Console.WriteLine($"Importing Appointments for Clinic Teams...");
+    new AppointmentStaffProcessor(dbAccess).ImportAppointmentsAndStaff();
+
     Console.WriteLine("Goodbye🦾...");
     Console.WriteLine("Press any key to continue...");
     Console.ReadKey();

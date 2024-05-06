@@ -58,6 +58,8 @@ namespace cvdaETL.Services.ETLManager
             
             _dbAccess.InteractionsAccess.InsertInteractions(interactions);
 
+            Repo.Instance.CvdaInteractions = _dbAccess.InteractionsAccess.GetAllInteractions();
+
         }
         private List<ModelInteraction> getMatchingInteractions(List<ModelInteraction> Interactions)
         {
@@ -141,6 +143,8 @@ namespace cvdaETL.Services.ETLManager
                     matchingInteractions.Add(newInteraction);
                 }
             }
+            
+            
 
             return matchingInteractions;
 

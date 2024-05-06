@@ -16,7 +16,7 @@ namespace cvdaETL.Core.Maps
             Map(m => m.EmisNo).Name("EmisNo");
             Map(m => m.ODSCode).Name("ODSCode");
             Map(m => m.NHSNumber).Name("NHSNumber");
-            Map(m => m.RiskScore).Name("AllConditionsRSTPHMCombined");
+            Map(m => m.RiskScore).Name("PHMRiskLevel");
             Map(m => m.HouseBound).Name("HOUSEBOUND");
             Map(m => m.InHome).Name("INHOME");
             Map(m => m.PCN).Name("PCN");

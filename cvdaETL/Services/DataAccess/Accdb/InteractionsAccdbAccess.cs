@@ -45,6 +45,22 @@ namespace cvdaETL.Services.DataAccess.Accdb
             }
         }
 
+        public List<ModelInteraction> GetAllInteractions()
+        {
+            var interactions = new List<ModelInteraction>();
+            using var connection = new OleDbConnection(_connectionString);
+            {
+                connection.Open();
+
+                string sql = "SELECT InteractionID, PatientID, RecallTeamID, InteractionDate, InteractionCodeTerm, InteractionComments, InteractionType FROM Interactions;";
+                interactions = connection.Query<ModelInteraction>(sql).ToList();
+
+                connection.Close();
+            }
+
+            return interactions;
+        }
+
         public void InsertRecallTeam(ModelRecallTeam RecallTeam)
         {
             using (var connection = new OleDbConnection(_connectionString))
