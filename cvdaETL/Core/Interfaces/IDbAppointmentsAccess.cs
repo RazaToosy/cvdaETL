@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace cvdaETL.Core.Interfaces
 {
-    public interface IDbAppointmentAccess
+    public interface IDbAppointmentsAccess
     {
         void InsertAppointments(List<ModelAppointment> Appointments);
         List<ModelAppointment> GetAllAppointments();

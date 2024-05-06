@@ -12,11 +12,11 @@ using Microsoft.VisualBasic;
 
 namespace cvdaETL.Services.DataAccess.Accdb
 {
-    public class AppointmentAndStaffAccdbAccess : IDbAppointmentAccess
+    public class AppointmentsAndStaffAccdbAccess : IDbAppointmentsAccess
     {
         private string _connectionString;
         
-        public AppointmentAndStaffAccdbAccess()
+        public AppointmentsAndStaffAccdbAccess()
         {
             _connectionString = Repo.Instance.ConnectionString;
         }

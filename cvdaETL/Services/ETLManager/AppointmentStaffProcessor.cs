@@ -26,7 +26,7 @@ namespace cvdaETL.Services.ETLManager
         public void ImportAppointmentsAndStaff()
         {
             var appointments = new CsvHelperManager().ImportFromCsv<ModelAppointment, AppointmentStaffMap>(Path.Combine(Repo.Instance.CsvPath, "ClinicsAppointments.csv"));
-            _currentStaff = _dbAccess.AppointmentAccess.GetStaffWithIDs();
+            _currentStaff = _dbAccess.AppointmentsAccess.GetStaffWithIDs();
 
             // Extract RecallTeam names from imported interactions and find names not in existingRecallTeamNames
             var StaffNamesNamesNotInExisting = appointments
@@ -49,15 +49,15 @@ namespace cvdaETL.Services.ETLManager
                 };
 
                 // Insert the RecallTeam into the database
-                _dbAccess.AppointmentAccess.InsertStaff(teamMember);
+                _dbAccess.AppointmentsAccess.InsertStaff(teamMember);
             });
             
-            Repo.Instance.CvdaStaff = _dbAccess.AppointmentAccess.GetStaffWithRoles();
+            Repo.Instance.CvdaStaff = _dbAccess.AppointmentsAccess.GetStaffWithRoles();
             
             //Ignore Booked Outcome as will have to handle deletions of appointments which is out of scope for this project.
             var pastAppointments = appointments.Where(a => a.AppointmentOutcome != "Booked").ToList();
             
-            var existingDates = _dbAccess.AppointmentAccess.GetDatesOfAppointments();
+            var existingDates = _dbAccess.AppointmentsAccess.GetDatesOfAppointments();
             
             var newAppointments = pastAppointments.Where(a => !existingDates.Contains(a.AppointmentDateTime)).ToList();
 
@@ -68,38 +68,15 @@ namespace cvdaETL.Services.ETLManager
                 appointment.PatientID = Repo.Instance.PatientIDsNHSNumber.FirstOrDefault(x => x.Value == appointment.NHSNumber).Key;
                 appointment.InteractionID = (Repo.Instance.CvdaInteractions
                     .FirstOrDefault(x => x.PatientID == appointment.PatientID)?.InteractionID
-                    .ToString()) ?? "No Interaction Found";
+                    .ToString()) ?? string.Empty;
                 appointment.AppointmentDateTime = appointment.AppointmentDateTime.Add(TimeSpan.Parse(appointment.AppointmentTime));
                 appointment.AppointmentMode = appointment.AppointmentType.Contains("Tel") ? "Telephone" : "F2F";
                 appointment.AppointmentFrequency = appointment.AppointmentType.Contains("Follow") ? "FollowUp" : "New";
             });
 
-            _dbAccess.AppointmentAccess.InsertAppointments(newAppointments);
+            _dbAccess.AppointmentsAccess.InsertAppointments(newAppointments);
             
-            Repo.Instance.CvdaAppointments = _dbAccess.AppointmentAccess.GetAllAppointments();
-            //public string AppointmentID { get; set; }  - new Guid
-            //public string InteractionID { get; set; } - from Interactions. Work out from patientID and Date of CvdaInteracitons
-            //public string StaffID { get; set; } - from Staff. Work out from CvdaStaff from StaffName
-            //public string PatientID { get; set; } - from Repo.PatientsWithIDs
-            //public string NHSNumber { get; set; } - already there
-            //public string StaffName { get; set; } - already there
-            //public string StaffRole { get; set; } - already there
-            //public DateTime AppointmentDateTime { get; set; } - join this with the AppointmentTime to get the correct DateTime
-            //public string AppointmentTime { get; set; } - already there
-            //public int AppointmentPlannedTime { get; set; } - already there
-            //public int AppointmentActualTime { get; set; } - already there
-            //public string AppointmentLocation { get; set; } - already there
-            //public string AppointmentPostCode { get; set; } - already there
-            //public string AppointmentType { get; set; } - already there - from SlotType
-            //public string AppointmentMode { get; set; } - F2F or Telephone. If SlotType contains Tel then Telephone otherwise assume it's face to face and add "F2F or "Telephone" to the AppointmentMode
-            //public string AppointmentOutcome { get; set; } - already there
-            //public string AppointmentFrequency { get; set; } - If the Type contains FollowUp then it is a follow up appointment otherwise it is a new appointment.
-
-
-            //AppointmentMode you work out from the SlotType. If contains Tel then it is a telephone appointment.
-
-            //Need to add Time to Date to get the correct DateTime for the appointment.
-
+            Repo.Instance.CvdaAppointments = _dbAccess.AppointmentsAccess.GetAllAppointments();
         }
     }
 }

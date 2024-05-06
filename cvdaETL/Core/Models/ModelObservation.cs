@@ -4,6 +4,7 @@ namespace cvdaETL.Core.Models
     {
         public string ObservationID { get; set; }
         public string PatientID { get; set; }
+        public string AppointmentID { get; set; }
         public DateTime ObservationDate { get; set; }
         public string ObservationCodeTerm { get; set; }
         public string ObservationText { get; set; }
