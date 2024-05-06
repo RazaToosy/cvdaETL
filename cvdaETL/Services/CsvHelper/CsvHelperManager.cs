@@ -12,7 +12,7 @@ namespace cvdaETL.Services.CsvHelper
         // Example: ImportFromCsv<ModelPatient, PatientMap>(filePath);
         public List<T> ImportFromCsv<T, TMap>(string filePath) where TMap : ClassMap<T>
         {
-            List<T> records;
+            List<T> records = new List<T>();
 
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {

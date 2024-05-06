@@ -12,7 +12,7 @@ namespace cvdaETL.Core.Maps
     {
         public PatientMap()
         {
-            Map(m => m.PatientID).Name("PatientID");
+            //Map(m => m.PatientID).Name("PatientID");
             Map(m => m.EmisNo).Name("EmisNo");
             Map(m => m.ODSCode).Name("ODSCode");
             Map(m => m.NHSNumber).Name("NHSNumber");

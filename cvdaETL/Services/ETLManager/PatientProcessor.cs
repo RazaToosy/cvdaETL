@@ -50,8 +50,9 @@ namespace cvdaETL.Services.ETLManager
                 // Check if the patient is in the existing Patient Table
                 if (existingNHSNumbers.ContainsValue(patient.NHSNumber))
                 {
+                    patient.PatientID = existingNHSNumbers.FirstOrDefault(x => x.Value == patient.NHSNumber).Key;
                     // Add the patient to the list for update
-                    patientsForUpdate.Add(patient);
+                    //patientsForUpdate.Add(patient);
                 }
                 else
                 {
@@ -80,16 +81,21 @@ namespace cvdaETL.Services.ETLManager
                     }
                     
                 }
-                cvdaTargets.Add(patient.PatientID, patient.CVDATargets);
 
+                if (!cvdaTargets.ContainsKey(patient.PatientID))
+                    cvdaTargets.Add(patient.PatientID, patient.CVDATargets);
             });
             Console.WriteLine("Patients for update: " + patientsForUpdate.Count);
-            Console.WriteLine("Patients for insert: " + patientsForInsert.Count);
             Console.WriteLine("Accessing Patient Table and Updating...");
             _dbAccess.PatientAccess.UpdatePatients(patientsForUpdate);
-            _dbAccess.PatientAccess.InsertPatients(patientsForInsert);
+
+            Console.WriteLine("Patients for insert: " + patientsForInsert.Count);
+            Console.WriteLine("Accessing Patient Table and Inserting...");
+            _dbAccess.PatientAccess.InsertPatients(patientsForInsert);       
+            
             Console.WriteLine("Inserting Registers...");
             _dbAccess.RegisterAccess.InsertRegister(patientsForRegister);
+            
             Console.WriteLine("Inserting Conditions and Targets...");
             _dbAccess.ConditionsAndTargetsAccess.InsertConditionsAndTargets(cvdaTargets);
 
@@ -97,6 +103,7 @@ namespace cvdaETL.Services.ETLManager
             Log.Information("Imported {0} new patients into DB.", patientsForInsert.Count);
 
             Repo.Instance.CvdaPatients = patients;
+            Repo.Instance.PatientIDsNHSNumber = _dbAccess.PatientAccess.GetNHSNumbers();
 
         }
     }

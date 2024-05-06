@@ -27,6 +27,7 @@ namespace cvdaETL.Data
         public string ConnectionString { get; set; }
         public DateTime InsertDate { get; set; }
         public string CsvPath { get; set; }
+        public Dictionary<string, string> PatientIDsNHSNumber { get; set; }
         public Dictionary<string, List<string>> CvdaTargetMaps { get; }
         public List<ModelAppointment> CvdaAppointments { get; set; }
         public List<ModelClinic> CvdaClinics { get; set; }
@@ -43,6 +44,7 @@ namespace cvdaETL.Data
             InsertDate = DateToInsert;
             ConnectionString = Connectionstring;
             CsvPath = Csvpath;
+            PatientIDsNHSNumber= new Dictionary<string, string>();
             CvdaTargetMaps = importCVDATargets(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CVDATargets.xml"));
             CvdaAppointments = new List<ModelAppointment>();
             CvdaClinics = new List<ModelClinic>();
