@@ -26,6 +26,7 @@ namespace cvdaETL.Services.ETLManager
         }
         public void ImportPatients()
         {
+            if (!File.Exists(Path.Combine(Repo.Instance.CsvPath, "Base.csv"))) return;
             // Import the patients from the CSV file
             var patients = new CsvHelperManager().ImportFromCsv<ModelPatient, PatientMap>(Path.Combine(Repo.Instance.CsvPath, "Base.csv"));
             var excludedFromRecall = new CsvHelperManager().ImportFromCsv<ModelPatientNHSNoOnly, PatientNHSNoOnlyMap>(Path.Combine(Repo.Instance.CsvPath, "Excluded.csv"));
@@ -104,6 +105,8 @@ namespace cvdaETL.Services.ETLManager
 
             Repo.Instance.CvdaPatients = patients;
             Repo.Instance.PatientIDsNHSNumber = _dbAccess.PatientAccess.GetNHSNumbers();
+            
+            
 
         }
     }

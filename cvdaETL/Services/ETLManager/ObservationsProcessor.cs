@@ -24,6 +24,7 @@ namespace cvdaETL.Services.ETLManager
         
         public void ImportObservations()
         {
+            if (!File.Exists(Path.Combine(Repo.Instance.CsvPath, "Observations.csv"))) return;
             var ObsCheckSums = _dbAccess.ObservationsAccess.GetCheckSums();
             var observations = new CsvImportObservations(ObsCheckSums).Import(Path.Combine(Repo.Instance.CsvPath, "Observations.csv"));
             _dbAccess.ObservationsAccess.InsertObservations(observations);

@@ -25,6 +25,7 @@ namespace cvdaETL.Services.ETLManager
 
         public void ImportAppointmentsAndStaff()
         {
+            if (!File.Exists(Path.Combine(Repo.Instance.CsvPath, "ClinicsAppointments.csv"))) return;
             var appointments = new CsvHelperManager().ImportFromCsv<ModelAppointment, AppointmentStaffMap>(Path.Combine(Repo.Instance.CsvPath, "ClinicsAppointments.csv"));
             _currentStaff = _dbAccess.AppointmentsAccess.GetStaffWithIDs();
 

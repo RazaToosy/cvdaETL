@@ -25,6 +25,7 @@ namespace cvdaETL.Services.ETLManager
 
         public void ProcessInteractions()
         {
+            if (!File.Exists(Path.Combine(Repo.Instance.CsvPath, "Interactions.csv"))) return;
             //Import into from Csv
             var interactions = new CsvHelperManager().ImportFromCsv<ModelInteraction, InteractionsMap>(Path.Combine(Repo.Instance.CsvPath, "Interactions.csv"));
 

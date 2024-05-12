@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
+using cvdaETL.Core.Enums;
 using cvdaETL.Core.Models;
 using cvdaETL.Data;
 
@@ -78,7 +79,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(5),
                                     ObservationText =  $"{csv.GetField<string>(6)} with {csv.GetField<string>(7)}",
-                                    ObservationTag = "Cardiovascular Clinic",
+                                    ObservationTag = ObservationTag.CardiovascularClinic.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -98,7 +99,7 @@ namespace cvdaETL.Services.CsvHelper
                                      ObservationDate = csv.GetField<DateTime>(8),
                                     ObservationCodeTerm = csv.GetField<string>(9),
                                     ObservationText = csv.GetField<string>(10),
-                                    ObservationTag = "Triage",
+                                    ObservationTag = ObservationTag.Triage.ToString(),
                                     AppointmentID = appointmentID,
                                      PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -117,7 +118,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(11),
                                     ObservationText = $"{csv.GetField<string>(12)} with {csv.GetField<string>(13)}",
-                                    ObservationTag = "HCA",
+                                    ObservationTag = ObservationTag.HCA.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -137,7 +138,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationDate = csv.GetField<DateTime>(14),
                                     ObservationCodeTerm = "Blood Sample Taken",
                                     ObservationText = string.Empty,
-                                    ObservationTag = "BloodTaken",
+                                    ObservationTag = ObservationTag.BloodTaken.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -157,7 +158,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationDate = csv.GetField<DateTime>(15),
                                     ObservationCodeTerm = "Urine Sample Taken",
                                     ObservationText = string.Empty,
-                                    ObservationTag = "UrineTaken",
+                                    ObservationTag = ObservationTag.UrineTaken.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -177,7 +178,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationDate = csv.GetField<DateTime>(16),
                                     ObservationCodeTerm = "Body Mass Index",
                                     ObservationValue = csv.GetField<decimal>(17),
-                                    ObservationTag = "BMI",
+                                    ObservationTag = ObservationTag.BMI.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -198,7 +199,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationCodeTerm = csv.GetField<string >(19),
                                     ObservationValue = string.IsNullOrEmpty(csv.GetField(20)) ? 0 : csv.GetField<decimal>(20),
                                     ObservationValue2 = string.IsNullOrEmpty(csv.GetField(21)) ? 0 : csv.GetField<decimal>(21),
-                                    ObservationTag = "BloodPressure",
+                                    ObservationTag = ObservationTag.BloodPressure.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -218,7 +219,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationDate = csv.GetField<DateTime>(22),
                                     ObservationCodeTerm = csv.GetField<string>(23),
                                     ObservationValue = csv.GetField<decimal>(24),
-                                    ObservationTag = "Cholesterol",
+                                    ObservationTag = ObservationTag.Cholesterol.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -237,7 +238,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(25),
                                     ObservationCodeTerm = csv.GetField<string>(26),
-                                    ObservationTag = "SmokingStatus",
+                                    ObservationTag = ObservationTag.SmokingStatus.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -256,7 +257,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(27),
                                     ObservationCodeTerm = csv.GetField<string>(28),
-                                    ObservationTag = "SmokingCessation",
+                                    ObservationTag = ObservationTag.SmokingCessation.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -275,7 +276,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(29),
                                     ObservationCodeTerm = csv.GetField<string>(30),
-                                    ObservationTag = "LLTNotAppropriate",
+                                    ObservationTag = ObservationTag.LLTNotAppropriate.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -295,7 +296,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationDate = csv.GetField<DateTime>(31),
                                     ObservationCodeTerm = "eGFR",
                                     ObservationValue = csv.GetField<decimal>(32),
-                                    ObservationTag = "eGFR",
+                                    ObservationTag = ObservationTag.eGFR.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -315,7 +316,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationDate = csv.GetField<DateTime>(33),
                                     ObservationCodeTerm = "ACR",
                                     ObservationValue = csv.GetField<decimal>(34),
-                                    ObservationTag = "ACR",
+                                    ObservationTag = ObservationTag.ACR.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -334,7 +335,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(35),
                                     ObservationCodeTerm = csv.GetField<string>(36),
-                                    ObservationTag = "Activity",
+                                    ObservationTag = ObservationTag.Activity.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -353,7 +354,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(37),
                                     ObservationCodeTerm = "Exercise Education Offered",
-                                    ObservationTag = "ExerciseEducation",
+                                    ObservationTag = ObservationTag.ExerciseEducation.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -372,7 +373,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(38),
                                     ObservationCodeTerm = csv.GetField<string>(39),
-                                    ObservationTag = "Diet",
+                                    ObservationTag = ObservationTag.Diet.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -391,7 +392,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(40),
                                     ObservationCodeTerm = csv.GetField<string>(41),
-                                    ObservationTag = "Alcohol",
+                                    ObservationTag = ObservationTag.Alcohol.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -411,7 +412,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationDate = csv.GetField<DateTime>(42),
                                     ObservationValue = csv.GetField<decimal>(43),
                                     ObservationCodeTerm = "Hba1C",
-                                    ObservationTag = "Hba1C",
+                                    ObservationTag = ObservationTag.Hba1C.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -430,7 +431,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(44),
                                     ObservationCodeTerm = csv.GetField<string>(45),
-                                    ObservationTag = "SocialPrescriber",
+                                    ObservationTag = ObservationTag.SocialPrescriber.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -449,7 +450,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(46),
                                     ObservationCodeTerm = csv.GetField<string>(47),
-                                    ObservationTag = "WeightManagement",
+                                    ObservationTag = ObservationTag.WeightManagement.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -468,7 +469,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(48),
                                     ObservationCodeTerm = "Referred to Health Coach",
-                                    ObservationTag = "HealthCoach",
+                                    ObservationTag = ObservationTag.HealthCoach.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -487,7 +488,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(49),
                                     ObservationCodeTerm = csv.GetField<string>(50),
-                                    ObservationTag = "Followups",
+                                    ObservationTag = ObservationTag.Followups.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -507,7 +508,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationDate = csv.GetField<DateTime>(51),
                                     ObservationCodeTerm = csv.GetField<string>(52),
                                     ObservationValue = csv.GetField<decimal>(53),
-                                    ObservationTag = "Cholesterol",
+                                    ObservationTag = ObservationTag.Cholesterol.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -527,7 +528,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationDate = csv.GetField<DateTime>(54),
                                     ObservationCodeTerm = "Started On New Medication",
                                     ObservationText = csv.GetField<string>(55),
-                                    ObservationTag = "NewRx",
+                                    ObservationTag = ObservationTag.NewRx.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -546,7 +547,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(56),
                                     ObservationCodeTerm = csv.GetField<string>(57),
-                                    ObservationTag = "RxExceptions",
+                                    ObservationTag = ObservationTag.RxExceptions.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -565,7 +566,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(58),
                                     ObservationCodeTerm = csv.GetField<string>(59),
-                                    ObservationTag = "OnMaxToleratedRx",
+                                    ObservationTag = ObservationTag.OnMaxToleratedRx.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -585,7 +586,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationDate = csv.GetField<DateTime>(60),
                                     ObservationCodeTerm = "Functional Assessment Score",
                                     ObservationValue = csv.GetField<decimal>(61),
-                                    ObservationTag = "FunctionalAssessment",
+                                    ObservationTag = ObservationTag.FunctionalAssessment.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -604,7 +605,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(62),
                                     ObservationCodeTerm = csv.GetField<string>(63),
-                                    ObservationTag = "Memory",
+                                    ObservationTag = ObservationTag.Memory.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -623,7 +624,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(64),
                                     ObservationCodeTerm = csv.GetField<string>(65),
-                                    ObservationTag = "CKD",
+                                    ObservationTag = ObservationTag.CKD.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -642,7 +643,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(66),
                                     ObservationText = csv.GetField<string>(67),
-                                    ObservationTag = "FriendsFamily",
+                                    ObservationTag = ObservationTag.FriendsFamily.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -661,7 +662,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(68),
                                     ObservationValue = csv.GetField<decimal>(69),
-                                    ObservationTag = "HealthConfidenceScore",
+                                    ObservationTag = ObservationTag.HealthConfidenceScore.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -680,7 +681,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(71),
                                     ObservationCodeTerm = csv.GetField<string>(70),
-                                    ObservationTag = "Antihypertensives",
+                                    ObservationTag = ObservationTag.Antihypertensives.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -699,7 +700,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(73),
                                     ObservationCodeTerm = csv.GetField<string>(72),
-                                    ObservationTag = "LipidLowering",
+                                    ObservationTag = ObservationTag.LipidLowering.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
@@ -718,7 +719,7 @@ namespace cvdaETL.Services.CsvHelper
                                     ObservationID = Guid.NewGuid().ToString(),
                                     ObservationDate = csv.GetField<DateTime>(75),
                                     ObservationCodeTerm = csv.GetField<string>(74),
-                                    ObservationTag = "SGLT2",
+                                    ObservationTag = ObservationTag.SGLT2.ToString(),
                                     AppointmentID = appointmentID,
                                     PatientID = returnPatientID(csv.GetField<string>(0)),
                                 };
