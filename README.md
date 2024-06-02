@@ -12,5 +12,5 @@ eg cvdaETL.exe -f "C:\PowerBI\cvda\csvs" -d "2024-05-19"
 
 Example above.
 
--d represents the insertion date (so the date you ran the script).
--f is the path to the folder location
+ -d represents the insertion date (so the date you ran the script).
+ -f is the path to the folder location
