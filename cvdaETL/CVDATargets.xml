@@ -9,6 +9,16 @@
 	        <Target><![CDATA[BP>180/120]]></Target>
 		</Targets>
     </Condition>
+	<Condition name="CHOL">
+		<Targets>
+			<Target><![CDATA[CVD not on LLT]]></Target>
+			<Target><![CDATA[CVD no lipid test]]></Target>
+			<Target><![CDATA[FH not on lipid treatment]]></Target>
+			<Target><![CDATA[Coded as FH]]></Target>
+			<Target><![CDATA[30 Plus FH case finder]]></Target>
+			<Target><![CDATA[Under 30 FH case finder]]></Target>
+		</Targets>
+	</Condition>
     <Condition name="CKD">
         <Targets>
             <Target><![CDATA[CKD & HT & ACR>70 BP>130]]></Target>

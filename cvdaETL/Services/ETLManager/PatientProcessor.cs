@@ -39,7 +39,9 @@ namespace cvdaETL.Services.ETLManager
             List<ModelPatient> patientsForInsert = new List<ModelPatient>();
             List<ModelRegister> patientsForRegister = new List<ModelRegister>();
 
-            Dictionary<string, string> cvdaTargets = new Dictionary<string, string>();
+            List<KeyValuePair<string,string>> cvdaTargets = new List<KeyValuePair<string, string>>();
+
+            //Dictionary<string, string> cvdaTargets = new Dictionary<string, string>();
 
             patients.ForEach(patient =>
             {
@@ -82,9 +84,7 @@ namespace cvdaETL.Services.ETLManager
                     }
                     
                 }
-
-                if (!cvdaTargets.ContainsKey(patient.PatientID))
-                    cvdaTargets.Add(patient.PatientID, patient.CVDATargets);
+                cvdaTargets.Add(new KeyValuePair<string, string>(patient.PatientID, patient.CVDATargets));
             });
             Console.WriteLine("Patients for update: " + patientsForUpdate.Count);
             Console.WriteLine("Accessing Patient Table and Updating...");
@@ -104,7 +104,7 @@ namespace cvdaETL.Services.ETLManager
             Log.Information("Imported {0} new patients into DB.", patientsForInsert.Count);
 
             Repo.Instance.CvdaPatients = patients;
-            Repo.Instance.PatientIDsNHSNumber = _dbAccess.PatientAccess.GetNHSNumbers();
+            
             
             
 

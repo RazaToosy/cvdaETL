@@ -56,26 +56,28 @@ namespace cvdaETL.Services.ETLManager
             Repo.Instance.CvdaStaff = _dbAccess.AppointmentsAccess.GetStaffWithRoles();
             
             //Ignore Booked Outcome as will have to handle deletions of appointments which is out of scope for this project.
-            var pastAppointments = appointments.Where(a => a.AppointmentOutcome != "Booked").ToList();
+            //var pastAppointments = appointments.Where(a => a.AppointmentOutcome != "Booked").ToList();
+            //var existingDates = _dbAccess.AppointmentsAccess.GetDatesOfAppointments();
+            //var newAppointments = pastAppointments.Where(a => !existingDates.Contains(a.AppointmentDateTime)).ToList();
             
-            var existingDates = _dbAccess.AppointmentsAccess.GetDatesOfAppointments();
-            
-            var newAppointments = pastAppointments.Where(a => !existingDates.Contains(a.AppointmentDateTime)).ToList();
+            _dbAccess.AppointmentsAccess.DeleteAppointments();
 
-            newAppointments.ForEach(appointment =>
+            var patientsWithNHSNo = _dbAccess.PatientAccess.GetNHSNumbers();
+
+            appointments.ForEach(appointment =>
             {
                 appointment.AppointmentID = Guid.NewGuid().ToString();
-                appointment.StaffID = _currentStaff.FirstOrDefault(x => x.Value == appointment.StaffName).Key;
-                appointment.PatientID = Repo.Instance.PatientIDsNHSNumber.FirstOrDefault(x => x.Value == appointment.NHSNumber).Key;
+                appointment.StaffID = Repo.Instance.CvdaStaff.FirstOrDefault(x => x.StaffName == appointment.StaffName).StaffID;
+                appointment.PatientID = patientsWithNHSNo.FirstOrDefault(x => x.Value == appointment.NHSNumber).Key;
                 appointment.InteractionID = (Repo.Instance.CvdaInteractions
                     .FirstOrDefault(x => x.PatientID == appointment.PatientID)?.InteractionID
                     .ToString()) ?? string.Empty;
                 appointment.AppointmentDateTime = appointment.AppointmentDateTime.Add(TimeSpan.Parse(appointment.AppointmentTime));
-                appointment.AppointmentMode = appointment.AppointmentType.Contains("Tel") ? "Telephone" : "F2F";
+                appointment.AppointmentMode = appointment.AppointmentType.Contains("Tel") | appointment.AppointmentType.Contains("Remote") ? "Telephone" : "F2F";
                 appointment.AppointmentFrequency = appointment.AppointmentType.Contains("Follow") ? "FollowUp" : "New";
             });
 
-            _dbAccess.AppointmentsAccess.InsertAppointments(newAppointments);
+            _dbAccess.AppointmentsAccess.InsertAppointments(appointments);
             
             Repo.Instance.CvdaAppointments = _dbAccess.AppointmentsAccess.GetAllAppointments();
         }

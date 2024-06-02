@@ -51,6 +51,20 @@ namespace cvdaETL.Services.DataAccess.Accdb
             }
         }
 
+        public void DeleteAppointments()
+        {
+            using (var connection = new OleDbConnection(_connectionString))
+            {
+                connection.Open();
+
+                var sql = "DELETE FROM Appointments;";
+
+                connection.Execute(sql);
+
+                connection.Close();
+            }
+        }
+
         public List<ModelAppointment> GetAllAppointments()
         {
             var appointments = new List<ModelAppointment>();

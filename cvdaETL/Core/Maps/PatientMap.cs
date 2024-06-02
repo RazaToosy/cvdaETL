@@ -43,6 +43,7 @@ namespace cvdaETL.Core.Maps
             Map(m => m.Ethnicity).Name("Ethnicity");
             Map(m => m.PHMData).Name("PHMData");
             Map(m => m.CVDATargets).Name("MetricShortName");
+            Map(m => m.CVDATargets).Name("MetricShortNames");
         }
     }
 }

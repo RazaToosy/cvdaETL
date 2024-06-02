@@ -87,7 +87,8 @@ static void RunWithOptions(Options opts)
 
     Console.WriteLine($"Importing Patients...");
     new PatientProcessor(dbAccess).ImportPatients();
-    
+    Repo.Instance.PatientIDsNHSNumber = dbAccess.PatientAccess.GetNHSNumbers();
+
     Console.WriteLine($"Importing Baseline Observations...");
     new ObservationInBaseProcessor(dbAccess).ImportObservationInBase();
 

@@ -9,6 +9,6 @@ namespace cvdaETL.Core.Interfaces
 {
     public interface  IDbConditionsAndTargetsAccess
     {
-        void InsertConditionsAndTargets(Dictionary<string, string> CVDATargets);
+        void InsertConditionsAndTargets(List<KeyValuePair<string, string>> CVDATargets);
     }
 }

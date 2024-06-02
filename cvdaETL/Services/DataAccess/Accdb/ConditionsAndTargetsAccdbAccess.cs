@@ -15,7 +15,7 @@ namespace cvdaETL.Services.DataAccess.Accdb
             _connectionString = Repo.Instance.ConnectionString;
         }
 
-        public void InsertConditionsAndTargets(Dictionary<string, string> CVDATargets)
+        public void InsertConditionsAndTargets(List<KeyValuePair<string, string>> CVDATargets)
         {
             if (CheckIfDateExists()) return;
             
