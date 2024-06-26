@@ -77,6 +77,11 @@ namespace cvdaETL.Services.ETLManager
                 appointment.AppointmentFrequency = appointment.AppointmentType.Contains("Follow") ? "FollowUp" : "New";
             });
 
+            var appointmentsWithNullPatientID = appointments.Where(appointment => appointment.PatientID == null).ToList();
+
+            // Remove appointments where PatientID is null from the original list
+            appointments.RemoveAll(appointment => appointment.PatientID == null);
+
             _dbAccess.AppointmentsAccess.InsertAppointments(appointments);
             
             Repo.Instance.CvdaAppointments = _dbAccess.AppointmentsAccess.GetAllAppointments();

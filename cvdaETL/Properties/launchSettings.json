@@ -2,7 +2,7 @@
   "profiles": {
     "CVDAETL": {
       "commandName": "Project",
-      "commandLineArgs": "-f \"C:\\PowerBI\\cvda\\csvs\" -d \"2024-05-24\""
+      "commandLineArgs": "-f \"C:\\PowerBI\\cvda\\csvs\" -d \"2024-06-24\""
     }
   }
 }

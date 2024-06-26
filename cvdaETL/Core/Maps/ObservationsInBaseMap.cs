@@ -15,7 +15,7 @@ namespace cvdaETL.Core.Maps
     {
         public ObservationsInBaseMap()
         {
-            Map(m => m.NHSNumber).Name("NHSNumber");
+            Map(m => m.NHSNumber).Name("NHS Number");
             Map(m => m.Hba1C).Name("Hba1c").TypeConverter(new CustomDecimalConverter()); 
             Map(m => m.Hba1cDate).Name("DateOfHba1c").TypeConverter(new CustomDateTimeConverter()); 
             Map(m => m.SystolicBP).Name("SystolicBP").TypeConverter(new CustomDecimalConverter());
@@ -31,15 +31,11 @@ namespace cvdaETL.Core.Maps
     {
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            if (string.IsNullOrWhiteSpace(text))
+            if (DateTime.TryParseExact(text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date))
             {
-                return null; // Return null if the field is blank
+                return date;//ToString("MM/dd/yyyy");
             }
-            if (DateTime.TryParseExact(text, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date))
-            {
-                return date;
-            }
-            return base.ConvertFromString(text, row, memberMapData);
+            return null; // or throw an exception, depending on your needs
         }
     }
 

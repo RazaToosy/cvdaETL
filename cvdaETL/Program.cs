@@ -90,7 +90,7 @@ static void RunWithOptions(Options opts)
     Repo.Instance.PatientIDsNHSNumber = dbAccess.PatientAccess.GetNHSNumbers();
 
     Console.WriteLine($"Importing Baseline Observations...");
-    new ObservationInBaseProcessor(dbAccess).ImportObservationInBase();
+    //new ObservationInBaseProcessor(dbAccess).ImportObservationInBase();
 
     Console.WriteLine($"Importing Interactions for Recall Team...");
     new InteractionsProcessor(dbAccess).ProcessInteractions();
