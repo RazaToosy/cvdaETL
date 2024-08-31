@@ -16,14 +16,14 @@ namespace cvdaETL.Core.Maps
         public ObservationsInBaseMap()
         {
             Map(m => m.NHSNumber).Name("NHS Number");
-            Map(m => m.Hba1C).Name("Hba1c").TypeConverter(new CustomDecimalConverter()); 
-            Map(m => m.Hba1cDate).Name("DateOfHba1c").TypeConverter(new CustomDateTimeConverter()); 
-            Map(m => m.SystolicBP).Name("SystolicBP").TypeConverter(new CustomDecimalConverter());
-            Map(m => m.DiastolicBP).Name("DiastolicBP").TypeConverter(new CustomDecimalConverter());
-            Map(m => m.SystolicBPDate).Name("DateOfSystolic").TypeConverter(new CustomDateTimeConverter());
-            Map(m => m.DiastolicBPDate).Name("DateOfDiastolic").TypeConverter(new CustomDateTimeConverter());
-            Map(m => m.Cholesterol).Name("CholLevel").TypeConverter(new CustomDecimalConverter());
-            Map(m => m.CholesterolDate).Name("DateOfCholesterol").TypeConverter(new CustomDateTimeConverter());
+            Map(m => m.Hba1C).Name("HbA1c").TypeConverter(new CustomDecimalConverter()); 
+            Map(m => m.Hba1cDate).Name("HbA1c Date").TypeConverter(new CustomDateTimeConverter()); 
+            Map(m => m.SystolicBP).Name("Systolic BP").TypeConverter(new CustomDecimalConverter());
+            Map(m => m.DiastolicBP).Name("Diastolic BP").TypeConverter(new CustomDecimalConverter());
+            Map(m => m.SystolicBPDate).Name("Systolic BP Date").TypeConverter(new CustomDateTimeConverter());
+            Map(m => m.DiastolicBPDate).Name("Diastolic BP Date").TypeConverter(new CustomDateTimeConverter());
+            Map(m => m.Cholesterol).Name("Cholesterol").TypeConverter(new CustomDecimalConverter());
+            Map(m => m.CholesterolDate).Name("Cholesterol Date").TypeConverter(new CustomDateTimeConverter());
         }
     }
 

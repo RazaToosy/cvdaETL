@@ -19,7 +19,7 @@ namespace cvdaETL.Core.Maps
             Map(m => m.EmisNo).Name("EMIS Number");
             Map(m => m.ODSCode).Name("ODS Code");
             Map(m => m.NHSNumber).Name("NHS Number");
-            Map(m => m.RiskScore).Name("Public Health Score").TypeConverter<IntConverter>();
+            Map(m => m.RiskScore).Name("PHM Score").TypeConverter<DoubleConverter>();
             Map(m => m.HouseBound).Name("Is Housebound");
             Map(m => m.InHome).Name("Is Housebound");
             Map(m => m.PCN).Name("PCN Name");
@@ -41,16 +41,17 @@ namespace cvdaETL.Core.Maps
             Map(m => m.Mobile).Name("Mobile");
             Map(m => m.WorkTelephone).Name("Work Telephone");
             Map(m => m.Email).Name("Email");
-            Map(m => m.DeprivationDecile).Name("Deprivation Index").TypeConverter<IntConverter>(); ;
-            Map(m => m.HealthDecile).Name("Deprivation Index").TypeConverter<IntConverter>(); ;
+            Map(m => m.DeprivationDecile).Name("Deprivation Index").TypeConverter<DoubleConverter>(); ;
+            Map(m => m.HealthDecile).Name("Deprivation Index").TypeConverter<DoubleConverter>(); ;
             Map(m => m.Ethnicity).Name("Ethnicity (BAME)");
             Map(m => m.PHMData).Name("PHM Data");
-            Map(m => m.CVDATargets).Name("MetricShortName");
-            Map(m => m.CVDATargets).Name("MetricShortNames");
+            Map(m => m.CVDATargets).Name("Metric Short Name_merged");
+            //Map(m => m.CVDATargets).Name("Metric Short Name");
+            //Map(m => m.CVDATargets).Name("MetricShortNames");
         }
     }
 
-    public class IntConverter : DefaultTypeConverter
+    public class DoubleConverter : DefaultTypeConverter
     {
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {

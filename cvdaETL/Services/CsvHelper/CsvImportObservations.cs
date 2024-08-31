@@ -171,7 +171,7 @@ namespace cvdaETL.Services.CsvHelper
                                 }
                                 break;
                             case 16: //BMI
-                                if (string.IsNullOrWhiteSpace(fieldValue)) break;
+                                if (string.IsNullOrWhiteSpace(fieldValue) || string.IsNullOrWhiteSpace(csv.GetField<string>(17))) break;
                                 observation = new ModelObservation
                                 {
                                     ObservationID = Guid.NewGuid().ToString(),
@@ -212,7 +212,7 @@ namespace cvdaETL.Services.CsvHelper
                                 }
                                 break;
                             case 22: //Cholesterol
-                                if (string.IsNullOrWhiteSpace(fieldValue)) break;
+                                if (string.IsNullOrWhiteSpace(fieldValue) || string.IsNullOrWhiteSpace(csv.GetField<string>(24))) break;
                                 observation = new ModelObservation
                                 {
                                     ObservationID = Guid.NewGuid().ToString(),
@@ -289,7 +289,7 @@ namespace cvdaETL.Services.CsvHelper
                                 }
                                 break;
                             case 31: //eGFR
-                                if (string.IsNullOrWhiteSpace(fieldValue)) break;
+                                if (string.IsNullOrWhiteSpace(fieldValue) || string.IsNullOrWhiteSpace(csv.GetField<string>(32))) break;
                                 observation = new ModelObservation
                                 {
                                     ObservationID = Guid.NewGuid().ToString(),
@@ -309,7 +309,7 @@ namespace cvdaETL.Services.CsvHelper
                                 }
                                 break;
                             case 33: //ACR
-                                if (string.IsNullOrWhiteSpace(fieldValue)) break;
+                                if (string.IsNullOrWhiteSpace(fieldValue)|| string.IsNullOrWhiteSpace(csv.GetField<string>(34))) break;
                                 observation = new ModelObservation
                                 {
                                     ObservationID = Guid.NewGuid().ToString(),
@@ -405,7 +405,7 @@ namespace cvdaETL.Services.CsvHelper
                                 }
                                 break;
                             case 42: //Hba1C
-                                if (string.IsNullOrWhiteSpace(fieldValue)) break;
+                                if (string.IsNullOrWhiteSpace(fieldValue) || string.IsNullOrWhiteSpace(csv.GetField<string>(43))) break;
                                 observation = new ModelObservation
                                 {
                                     ObservationID = Guid.NewGuid().ToString(),
@@ -501,7 +501,7 @@ namespace cvdaETL.Services.CsvHelper
                                 }
                                 break;
                             case 51: //Cholesterol
-                                if (string.IsNullOrWhiteSpace(fieldValue)) break;
+                                if (string.IsNullOrWhiteSpace(fieldValue) || string.IsNullOrWhiteSpace(csv.GetField<string>(53))) break;
                                 observation = new ModelObservation
                                 {
                                     ObservationID = Guid.NewGuid().ToString(),
